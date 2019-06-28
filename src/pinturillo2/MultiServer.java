@@ -21,6 +21,9 @@ public class MultiServer {
     static Vector<ClientHandler> ar = new Vector<>();
     static int i = 1;
     
+    String[] palavras = {"Aniverário", "Suécia", "Coroa", "Holanda", "Ovelha", "Serpente", "Melancia", "Ásia", "Acampamento", "Voleibol", "Árvore", "Circo", "Ramo", 
+        "Natal", "Leopardo", "Talheres", "Barril", "Biscoito", "Arco-íris", "Osso", "Computador", "Ninho", "Chama", "Volante", "Cereja"};
+    
     Timer timer1 = new Timer();
     Timer timer2 = new Timer();
 
