@@ -5,12 +5,19 @@
  */
 package pinturillo2;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
+import java.util.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 
 /**
  *
@@ -18,18 +25,81 @@ import javafx.scene.control.Label;
  */
 public class FXMLDocumentController implements Initializable {
     
-    @FXML
-    private Label label;
+    private Game game;
+    
+    public Cliente serverCon;
+    
+    Set<String> listClientsString = new HashSet<String>();
     
     @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
+    public Label indicator_drawer_lbl;
+    
+    @FXML
+    public ListView<String> clienteList;
+    
+    @FXML
+    public Canvas canvas;
+    
+    GraphicsContext gc;
+    
+    @FXML
+    public Slider slide;
+    
+    @FXML
+    public ColorPicker cp;
+    
+    @FXML
+    public Button btlimpa;
+    
+    @FXML
+    public Label remain_time_lbl;
+    
+   @FXML
+    private void OnSliderDragged (){
+        double value = slide.getValue();
+        String str = String.format("%.1f", value);
+        this.game.lineWidth = value;
+    }
+
+     
+    @FXML
+    private void onCanvasMouseDragged(MouseEvent event) {
+        this.game.setOnMouseDragged(event);
+    }
+    
+    @FXML
+    private void onCanvasMousePressed(MouseEvent event) {
+        this.game.setOnMousePressed(event);
+    }
+    
+    @FXML
+    private void setOnAction(){
+       game.setColor(cp.getValue());       
+    }
+    
+    @FXML
+    private void setOnMouseClicked(){
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            gc = canvas.getGraphicsContext2D();
+            this.game = new Game(this);
+            
+            this.serverCon = new Cliente(s -> {
+                Platform.runLater(() -> {
+                    this.onNewFromServer(s);
+                    this.game.onNewFromServer(s);
+                });
+            });
+            this.serverCon.setDaemon(true);
+            this.serverCon.start();
+        } catch (IOException ex) {
+        }
+        
+        this.canvas.setOnMouseReleased((e) -> this.game.onMouseReleased(e));
     }    
     
 }
