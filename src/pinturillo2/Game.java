@@ -7,6 +7,7 @@ package pinturillo2;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
@@ -121,7 +122,35 @@ public class Game {
             this.currTimerTask = createNewTimeTimerTask();
             t.scheduleAtFixedRate(currTimerTask, 0, 1000);
         }
-
+        
+            if (splitedData[0].equalsIgnoreCase("new_round")) {
+                System.out.println("new round");
+                myTurn = false;
+                gameHasStarted = false;
+                this.ctl.gc.clearRect(0, 0, this.ctl.canvas.getWidth(), this.ctl.canvas.getHeight());
+        }
+        
+            if (splitedData[0].equalsIgnoreCase("no_gess_winner")) {
+                System.out.println("ninguem acertou.");
+        }
+        
+            if (splitedData[0].equalsIgnoreCase("drawing")) {
+                double w = this.ctl.canvas.getWidth();
+                double h = this.ctl.canvas.getHeight();
+        
+                drawLine(Double.parseDouble(splitedData[1]) * w, Double.parseDouble(splitedData[2]) * h, Double.parseDouble(splitedData[3]) * w, Double.parseDouble(splitedData[4]) * h, Color.web(splitedData[5]), Double.parseDouble(splitedData[6]), false);
+        } 
+    }
     
+        private TimerTask createNewTimeTimerTask() {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    ctl.remain_time_lbl.setText("" + currTime);
+                    currTime -= 1;
+                });
+            }
+        };
     }
 }
