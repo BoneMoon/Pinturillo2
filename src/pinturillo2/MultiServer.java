@@ -8,6 +8,7 @@ package pinturillo2;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,36 +18,70 @@ import java.util.logging.Logger;
  * @author josed
  */
 public class MultiServer {
-    int pontuacao = 0;
-    static Vector<ClientHandler> ar = new Vector<>();
+    HashMap<String, Integer> pontuacoes = new HashMap<>();
+    HashMap<String, Integer> timesPlayed = new HashMap<>();
+    String palavraSelecionada = null;
+    ClientHandler nowPlaying = null;
+    CopyOnWriteArrayList<ClientHandler> ar = new CopyOnWriteArrayList<>();
     static int i = 1;
     
     String[] palavras = {"Aniverário", "Suécia", "Coroa", "Holanda", "Ovelha", "Serpente", "Melancia", "Ásia", "Acampamento", "Voleibol", "Árvore", "Circo", "Ramo", 
         "Natal", "Leopardo", "Talheres", "Barril", "Biscoito", "Arco-íris", "Osso", "Computador", "Ninho", "Chama", "Volante", "Cereja"};
     
     Timer timer1 = new Timer();
-    Timer timer2 = new Timer();
+    TimerTask corrTimerTask = this.createNewTimerTask();
 
-    public static void main(String[] args) throws IOException {
-        ServerSocket ss = new ServerSocket(1234);
-        Socket s;
-        System.out.println("à espera de conexões...");
-        while (true) {
+public MultiServer() throws IOException {
+    
+        
+    ServerSocket ss = new ServerSocket(1234);
+    Socket s;
+    System.out.println("à espera de conexões...");
+    while (true) {
 
-            s = ss.accept();
+        s = ss.accept();
+            
+        if(ar.size()>= 2) continue;
             System.out.println("Jogador" + i + "Conectou:" + s);
             DataInputStream dis = new DataInputStream(s.getInputStream());
             DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 
-            ClientHandler mtch = new ClientHandler(s, "Jogador" + " " + i, dis, dos);
+        ClientHandler mtch = new ClientHandler(this, s, "Jogador" + " " + i , dis, dos);
 
-            Thread t = new Thread(mtch);
+        Thread t = new Thread(mtch);
+        t.setDaemon(true);
+        ar.add(mtch);
             
-            ar.add(mtch);
-
-            t.start();
-            i++;
+        t.start();
+        i++;
+            
+        this.pontuacoes.put(mtch.nome, 0);
+        this.timesPlayed.put(mtch.nome, 0);
+        if(ar.size() == 2) this.starGame(); 
         }
+    }
+
+ public static void main(String[] args) throws IOException {
+        MultiServer s = new MultiServer();
+    }
+ 
+  private void starGame() {
+        String nextWord = this.getRandomWord();
+        this.palavraSelecionada = nextWord;
+        
+        ClientHandler ch = this.getNextPlayer();
+        this.nowPlaying = ch;
+        this.nowPlaying.send("turn:" + this.palavraSelecionada);
+        
+        if (this.corrTimerTask == null) {
+            this.corrTimerTask = this.createNewTimerTask();
+        } else {
+            this.corrTimerTask.cancel();
+            this.corrTimerTask = this.createNewTimerTask();
+        }
+        
+        this.timer1.schedule(corrTimerTask, 20 * 1000);
+        ar.forEach(cl -> cl.send("startgame"));
     }
 
     private static class ClientHandler implements Runnable {
