@@ -64,5 +64,12 @@ public class Cliente extends Thread {
         this.sendMessage.start();
         this.readMessage.start();
     }
+    public void send(String data) {
+        try {
+            dos.writeUTF(data);
+            dos.flush();
+        } catch (IOException ex) {
+        }
+    }
     
 }

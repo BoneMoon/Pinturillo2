@@ -76,6 +76,52 @@ public class Game {
             
         }
     }
+    
+    public void onNewFromServer(String s) {
+        String[] splitedData = s.split(":");
+        
+        if (splitedData[0].equalsIgnoreCase("turn")) {
+            this.myTurn = true;
+            System.out.println("A palavra a desenhar é: " + splitedData[1]);
+        }
+        
+        if(splitedData[0].equalsIgnoreCase("end_game")){
+            this.currTimerTask.cancel();
+            System.out.println("O JOGO ACABOU!");
+            System.out.println("Jogador 1: " + splitedData[1]);
+            System.out.println("Jogador 2: " + splitedData[2]);
+            
+            int pj1 = Integer.parseInt(splitedData[1]);
+            int pj2 = Integer.parseInt(splitedData[2]);
+            
+            if (pj1 > pj2)  {
+                System.out.println("Jogador 1 WINS");
+            } else if (pj2 > pj1) {
+                System.out.println("Jogador 2 WINS");
+            } else {
+                System.out.println("Empate");
+            }
+        }
+        
+        
+        if (splitedData[0].equalsIgnoreCase("startgame")) {
+            System.out.println("Jogo começou");
+            gameHasStarted = true;
+            
+            if (myTurn) {
+                this.ctl.indicator_drawer_lbl.setText("Artista");
+            } else {
+                this.ctl.indicator_drawer_lbl.setText("Bidente");
+            }
+            
+            if (this.currTimerTask != null) {
+                this.currTimerTask.cancel();
+            }
+            this.currTime = 20;
+            this.currTimerTask = createNewTimeTimerTask();
+            t.scheduleAtFixedRate(currTimerTask, 0, 1000);
+        }
 
     
+    }
 }
