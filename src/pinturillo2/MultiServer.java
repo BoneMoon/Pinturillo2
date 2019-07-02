@@ -65,8 +65,6 @@ public MultiServer() throws IOException {
         MultiServer s = new MultiServer();
     }
  
- //PÕE AQUI O CÓDIGO
- 
   private void starGame() {
         String nextWord = this.getRandomWord();
         this.palavraSelecionada = nextWord;
@@ -85,6 +83,8 @@ public MultiServer() throws IOException {
         this.timer1.schedule(corrTimerTask, 20 * 1000);
         ar.forEach(cl -> cl.send("startgame"));
     }
+  
+  //PÕE CÓDIGO AQUI
 
     private class ClientHandler implements Runnable {
 
