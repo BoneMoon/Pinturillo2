@@ -65,6 +65,8 @@ public MultiServer() throws IOException {
         MultiServer s = new MultiServer();
     }
  
+ //PÕE AQUI O CÓDIGO
+ 
   private void starGame() {
         String nextWord = this.getRandomWord();
         this.palavraSelecionada = nextWord;
@@ -84,20 +86,22 @@ public MultiServer() throws IOException {
         ar.forEach(cl -> cl.send("startgame"));
     }
 
-    private static class ClientHandler implements Runnable {
+    private class ClientHandler implements Runnable {
 
-        final DataInputStream dis;
+                final DataInputStream dis;
         final DataOutputStream dos;
         final Socket s;
         private String nome;
         boolean isLoggedin;
+        MultiServer server;
 
-        private ClientHandler(Socket s, String string, DataInputStream dis, DataOutputStream dos) {
+        private ClientHandler(MultiServer server, Socket s, String string, DataInputStream dis, DataOutputStream dos) {
             this.s = s;
             this.dis = dis;
             this.dos = dos;
             this.nome = string;
             this.isLoggedin = true;
+            this.server = server;
         }
 
         @Override
