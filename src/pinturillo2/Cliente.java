@@ -26,16 +26,13 @@ public class Cliente extends Thread {
             while(true){
                 String msg = Le.umaString();
                 try {
-                    dos.writeUTF(msg);
-                    if(msg.equals("logout")){
-                        dos.close();
-                        break;
-                    }
+                    dos.writeUTF("gess" + ":" + msg);
+                    dos.flush();
                 } catch (IOException e) {
                 }
             }
         }
-
+        
     });
 
     public Thread readMessage = new Thread(new Runnable(){
@@ -45,7 +42,6 @@ public class Cliente extends Thread {
                 try {
                     String recebido = dis.readUTF();
                     onNewFromServer.accept(recebido);
-
                 } catch (Exception e) {
                 }      
             }
@@ -64,6 +60,7 @@ public class Cliente extends Thread {
         this.sendMessage.start();
         this.readMessage.start();
     }
+    
     public void send(String data) {
         try {
             dos.writeUTF(data);
