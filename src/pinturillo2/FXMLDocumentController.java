@@ -100,6 +100,27 @@ public class FXMLDocumentController implements Initializable {
         }
         
         this.canvas.setOnMouseReleased((e) -> this.game.onMouseReleased(e));
-    }    
+    }
+    public void onNewFromServer(String s) {
+
+        String[] splited = s.split(":");
+        
+        if (splited.length == 2 && splited[0].equalsIgnoreCase("new-cl")) {
+            if (!this.listClientsString.contains(splited[1].trim()))this.listClientsString.add(splited[1].trim());
+            this.clienteList.getItems().clear();
+            this.clienteList.getItems().addAll(this.listClientsString);
+        }
+        
+        if (splited[0].equalsIgnoreCase("new_round")){
+            int pj1 = Integer.parseInt(splited[1]);
+            int pj2 = Integer.parseInt(splited[2]);
+            
+            this.listClientsString.clear();
+            this.listClientsString.add("Jogador 1 " + pj1);
+            this.listClientsString.add("Jogador 2 " + pj2);
+            this.clienteList.getItems().clear();
+            this.clienteList.getItems().addAll(this.listClientsString);
+        }
+    } 
     
 }

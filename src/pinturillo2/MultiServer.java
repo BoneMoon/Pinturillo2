@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -84,7 +85,63 @@ public MultiServer() throws IOException {
         ar.forEach(cl -> cl.send("startgame"));
     }
   
-  //PÕE CÓDIGO AQUI
+  //PÕE CÓDIGO AQUI 
+    private ClientHandler getNextPlayer() {
+        if(nowPlaying == null) {
+            for (ClientHandler clientHandler : ar) {
+                if (clientHandler.nome.equalsIgnoreCase("Jogador 1")) return clientHandler;
+            }
+        }
+        
+        if(nowPlaying.nome.equalsIgnoreCase("Jogador 1")){
+            for (ClientHandler clientHandler : ar) {
+                if (clientHandler.nome.equalsIgnoreCase("Jogador 2")) return clientHandler;
+            }
+        }
+        
+        if(nowPlaying.nome.equalsIgnoreCase("Jogador 2")){
+            for (ClientHandler clientHandler : ar) {
+                if (clientHandler.nome.equalsIgnoreCase("Jogador 1")) return clientHandler;
+            }
+        }
+        
+        return null;
+        
+    }
+    
+    private String getRandomWord() {
+        return palavras[ThreadLocalRandom.current().nextInt(0, palavras.length)];
+    }
+
+    private TimerTask createNewTimerTask() {
+        return new TimerTask() {
+        @Override
+            public void run() {
+                ar.forEach(cl -> cl.send("no_gess_winner"));
+                timesPlayed.put(nowPlaying.nome, timesPlayed.get(nowPlaying.nome) + 1);
+                maybeStartNewRound();
+            }
+        };
+    }
+    
+    private void maybeStartNewRound() {
+        boolean maybeNextRound = false;
+        for (Map.Entry<String, Integer> entry : timesPlayed.entrySet()) {
+            if(entry.getValue() < 3){
+                maybeNextRound = true;
+                break;
+            } 
+        }
+        
+        if(!maybeNextRound){
+            ar.forEach(cl -> cl.send("end_game:" + this.pontuacoes.get("Jogador 1") + ":" + this.pontuacoes.get("Jogador 2")));
+            return;
+        }
+        
+        ar.forEach(cl -> cl.send("new_round" + ":" + pontuacoes.get("Jogador 1") + ":" + pontuacoes.get("Jogador 2")));
+        starGame();
+        
+    }
 
     private class ClientHandler implements Runnable {
 
@@ -151,5 +208,6 @@ public MultiServer() throws IOException {
             }
         }
     }
+    
     
 }
