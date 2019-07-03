@@ -55,7 +55,7 @@ public class FXMLDocumentController implements Initializable {
     public Label remain_time_lbl;
     
    @FXML
-    private void OnSliderDragged (){
+    private void onSliderDragged (){
         double value = slide.getValue();
         String str = String.format("%.1f", value);
         this.game.lineWidth = value;
