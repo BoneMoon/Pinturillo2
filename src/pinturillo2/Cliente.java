@@ -20,7 +20,7 @@ public class Cliente extends Thread {
     DataOutputStream dos;
     Consumer<String> onNewFromServer;
 
-    public Thread sendMessage = new Thread(new Runnable(){
+        public Thread sendMessage = new Thread(new Runnable(){
         @Override
         public void run() {
             while(true){
@@ -48,7 +48,7 @@ public class Cliente extends Thread {
         }           
     });
     
-    public Cliente(Consumer<String> onNewFromServer) throws UnknownHostException, IOException {
+        public Cliente(Consumer<String> onNewFromServer) throws UnknownHostException, IOException {
         this.ip = InetAddress.getByName("localhost");
         this.s = new Socket(ip, 1234);
         this.dis = new DataInputStream(s.getInputStream());
