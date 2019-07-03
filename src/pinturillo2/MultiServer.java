@@ -26,7 +26,7 @@ public class MultiServer {
     CopyOnWriteArrayList<ClientHandler> ar = new CopyOnWriteArrayList<>();
     static int i = 1;
     
-    String[] palavras = {"Aniverário", "Suécia", "Coroa", "Holanda", "Ovelha", "Serpente", "Melancia", "Ásia", "Acampamento", "Voleibol", "Árvore", "Circo", "Ramo", 
+     String[] palavras = {"Aniverário", "Suécia", "Coroa", "Holanda", "Ovelha", "Serpente", "Melancia", "Ásia", "Acampamento", "Voleibol", "Árvore", "Circo", "Ramo", 
         "Natal", "Leopardo", "Talheres", "Barril", "Biscoito", "Arco-íris", "Osso", "Computador", "Ninho", "Chama", "Volante", "Cereja"};
     
     Timer timer1 = new Timer();
@@ -36,29 +36,29 @@ public MultiServer() throws IOException {
     
         
     ServerSocket ss = new ServerSocket(1234);
-    Socket s;
-    System.out.println("à espera de conexões...");
-    while (true) {
+        Socket s;
+        System.out.println("à espera de conexões...");
+        while (true) {
 
-        s = ss.accept();
+            s = ss.accept();
             
-        if(ar.size()>= 2) continue;
+            if(ar.size()>= 2) continue;
             System.out.println("Jogador" + i + "Conectou:" + s);
             DataInputStream dis = new DataInputStream(s.getInputStream());
             DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 
-        ClientHandler mtch = new ClientHandler(this, s, "Jogador" + " " + i , dis, dos);
+            ClientHandler mtch = new ClientHandler(this, s, "Jogador" + " " + i , dis, dos);
 
-        Thread t = new Thread(mtch);
-        t.setDaemon(true);
-        ar.add(mtch);
+            Thread t = new Thread(mtch);
+            t.setDaemon(true);
+            ar.add(mtch);
             
-        t.start();
-        i++;
+            t.start();
+            i++;
             
-        this.pontuacoes.put(mtch.nome, 0);
-        this.timesPlayed.put(mtch.nome, 0);
-        if(ar.size() == 2) this.starGame(); 
+            this.pontuacoes.put(mtch.nome, 0);
+            this.timesPlayed.put(mtch.nome, 0);
+            if(ar.size() == 2) this.starGame(); 
         }
     }
 
@@ -67,7 +67,7 @@ public MultiServer() throws IOException {
     }
  
   private void starGame() {
-        String nextWord = this.getRandomWord();
+                String nextWord = this.getRandomWord();
         this.palavraSelecionada = nextWord;
         
         ClientHandler ch = this.getNextPlayer();
@@ -85,7 +85,7 @@ public MultiServer() throws IOException {
         ar.forEach(cl -> cl.send("startgame"));
     }
   
-  //PÕE CÓDIGO AQUI 
+  
     private ClientHandler getNextPlayer() {
         if(nowPlaying == null) {
             for (ClientHandler clientHandler : ar) {
@@ -124,7 +124,7 @@ public MultiServer() throws IOException {
         };
     }
     
-    private void maybeStartNewRound() {
+        private void maybeStartNewRound() {
         boolean maybeNextRound = false;
         for (Map.Entry<String, Integer> entry : timesPlayed.entrySet()) {
             if(entry.getValue() < 3){
@@ -162,7 +162,7 @@ public MultiServer() throws IOException {
         }
 
         @Override
-         public void run() {
+        public void run() {
             for (int a = 0; a < this.server.ar.size(); a++) {
                 if (!this.server.ar.get(a).nome.equalsIgnoreCase(this.nome)) {
                     try {
@@ -190,7 +190,7 @@ public MultiServer() throws IOException {
             }
         }
          
-                 public void send(String dados) {
+        public void send(String dados) {
             try {
                 this.dos.writeUTF(dados);
                 this.dos.flush();
@@ -203,7 +203,7 @@ public MultiServer() throws IOException {
             String[] splitedData = recebido.split(":");
             
             if (splitedData[0].equalsIgnoreCase("drawing")) {
-                    ar
+                ar
                     .stream()
                     .filter(cl -> !cl.equals(this))
                     .forEach(cl -> cl.send(recebido));
