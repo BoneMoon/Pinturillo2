@@ -145,7 +145,7 @@ public MultiServer() throws IOException {
 
     private class ClientHandler implements Runnable {
 
-                final DataInputStream dis;
+        final DataInputStream dis;
         final DataOutputStream dos;
         final Socket s;
         private String nome;
@@ -162,49 +162,63 @@ public MultiServer() throws IOException {
         }
 
         @Override
-        public void run() {
-            for (int a = 0; a < ar.size(); a++) {
-                if (!ar.get(a).nome.equalsIgnoreCase(this.nome)) {
+         public void run() {
+            for (int a = 0; a < this.server.ar.size(); a++) {
+                if (!this.server.ar.get(a).nome.equalsIgnoreCase(this.nome)) {
                     try {
-                        ar.get(a).dos.writeUTF("new-cl: " + this.nome);
+                        this.server.ar.get(a).dos.writeUTF("new-cl: " + this.nome);
                         
                     } catch (IOException ex) {
                         Logger.getLogger(MultiServer.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
                 try {
-                    this.dos.writeUTF("new-cl: " + ar.get(a).nome);
+                    this.dos.writeUTF("new-cl: " + this.server.ar.get(a).nome);
                 } catch (IOException ex) {
                     Logger.getLogger(MultiServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             
-            String recebido;
+            
             while (true) {
                 try {
-                    recebido = this.dis.readUTF();
-                    System.out.println(recebido);
-                    if (recebido.equals("logout")) {
-                        this.isLoggedin = false;
-                        this.s.close();
-                        ar.remove(this);
-                        for (ClientHandler mc : ar) {
-                            mc.dos.writeUTF(this.nome + " desconectou-se.");
-                        }
-                        System.out.println(this.nome + " desconectou-se.");
-                        break;
-                    }
-
-                    for (ClientHandler mc : ar) {
-                        mc.dos.writeUTF(this.nome + " : " + recebido);
-                    }
+                    String recebido = this.dis.readUTF();
+                    this.handleIncomming(recebido);
+                    
                 } catch (IOException e) {
                 }
             }
+        }
+         
+                 public void send(String dados) {
             try {
-                this.dis.close();
-                this.dos.close();
-            } catch (IOException e) {
+                this.dos.writeUTF(dados);
+                this.dos.flush();
+            } catch (IOException ex) {
+                Logger.getLogger(MultiServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        private void handleIncomming(String recebido) {
+            String[] splitedData = recebido.split(":");
+            
+            if (splitedData[0].equalsIgnoreCase("drawing")) {
+                    ar
+                    .stream()
+                    .filter(cl -> !cl.equals(this))
+                    .forEach(cl -> cl.send(recebido));
+            }
+            
+            if (splitedData[0].equalsIgnoreCase("gess")) {
+                String gess = splitedData[1];
+                
+                if (!palavraSelecionada.equalsIgnoreCase(gess)) return;
+                
+                corrTimerTask.cancel();
+                pontuacoes.put(this.nome, pontuacoes.get(this.nome) + 10);
+                pontuacoes.put(nowPlaying.nome, pontuacoes.get(nowPlaying.nome) + 5);
+                timesPlayed.put(nowPlaying.nome, timesPlayed.get(nowPlaying.nome) + 1);
+                maybeStartNewRound();
             }
         }
     }
