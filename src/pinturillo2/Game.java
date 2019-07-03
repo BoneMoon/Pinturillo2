@@ -57,7 +57,7 @@ public class Game {
         drawLine(x0, y0, e.getX(), e.getY(), color, this.ctl.slide.getValue(), true);
     }
     
-    public void drawLine(double x0, double y0, double x1, double y1, Color color, double lw, boolean emmit){
+        public void drawLine(double x0, double y0, double x1, double y1, Color color, double lw, boolean emmit){
         this.ctl.gc.beginPath();
         this.ctl.gc.moveTo(x0, y0);
         this.ctl.gc.lineTo(x1, y1);
@@ -123,23 +123,23 @@ public class Game {
             t.scheduleAtFixedRate(currTimerTask, 0, 1000);
         }
         
-            if (splitedData[0].equalsIgnoreCase("new_round")) {
-                System.out.println("new round");
-                myTurn = false;
-                gameHasStarted = false;
-                this.ctl.gc.clearRect(0, 0, this.ctl.canvas.getWidth(), this.ctl.canvas.getHeight());
+        if (splitedData[0].equalsIgnoreCase("new_round")) {
+            System.out.println("new round");
+            myTurn = false;
+            gameHasStarted = false;
+            this.ctl.gc.clearRect(0, 0, this.ctl.canvas.getWidth(), this.ctl.canvas.getHeight());
         }
         
-            if (splitedData[0].equalsIgnoreCase("no_gess_winner")) {
-                System.out.println("ninguem acertou.");
+        if (splitedData[0].equalsIgnoreCase("no_gess_winner")) {
+            System.out.println("ninguem acertou.");
         }
         
-            if (splitedData[0].equalsIgnoreCase("drawing")) {
-                double w = this.ctl.canvas.getWidth();
-                double h = this.ctl.canvas.getHeight();
+        if (splitedData[0].equalsIgnoreCase("drawing")) {
+            double w = this.ctl.canvas.getWidth();
+            double h = this.ctl.canvas.getHeight();
         
-                drawLine(Double.parseDouble(splitedData[1]) * w, Double.parseDouble(splitedData[2]) * h, Double.parseDouble(splitedData[3]) * w, Double.parseDouble(splitedData[4]) * h, Color.web(splitedData[5]), Double.parseDouble(splitedData[6]), false);
-        } 
+            drawLine(Double.parseDouble(splitedData[1]) * w, Double.parseDouble(splitedData[2]) * h, Double.parseDouble(splitedData[3]) * w, Double.parseDouble(splitedData[4]) * h, Color.web(splitedData[5]), Double.parseDouble(splitedData[6]), false);
+        }
     }
     
         private TimerTask createNewTimeTimerTask() {
