@@ -100,7 +100,9 @@ public class FXMLDocumentController implements Initializable {
         }
         
         this.canvas.setOnMouseReleased((e) -> this.game.onMouseReleased(e));
+        
     }
+    
     public void onNewFromServer(String s) {
 
         String[] splited = s.split(":");
