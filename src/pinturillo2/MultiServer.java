@@ -32,7 +32,11 @@ public class MultiServer {
     Timer timer1 = new Timer();
     TimerTask corrTimerTask = this.createNewTimerTask();
 
-public MultiServer() throws IOException {
+    /**
+     *
+     * @throws IOException
+     */
+    public MultiServer() throws IOException {
     
         
     ServerSocket ss = new ServerSocket(1234);
@@ -62,7 +66,12 @@ public MultiServer() throws IOException {
         }
     }
 
- public static void main(String[] args) throws IOException {
+    /**
+     *
+     * @param args
+     * @throws IOException
+     */
+    public static void main(String[] args) throws IOException {
         MultiServer s = new MultiServer();
     }
  
