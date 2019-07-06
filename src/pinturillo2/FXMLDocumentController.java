@@ -27,30 +27,57 @@ public class FXMLDocumentController implements Initializable {
     
     private Game game;
     
+    /**
+     *
+     */
     public Cliente serverCon;
     
     Set<String> listClientsString = new HashSet<String>();
     
+    /**
+     * label que vai fazer dizer quem é a desenhar
+     *
+     */
     @FXML
     public Label indicator_drawer_lbl;
     
+    /**
+     *Lista View
+     */
     @FXML
     public ListView<String> clienteList;
     
+    /**
+     * Canvas onde vamos desenhar
+     */
     @FXML
     public Canvas canvas;
     
     GraphicsContext gc;
     
+    /**
+     *Slider para mudarmos o stroke
+     */
     @FXML
     public Slider slide;
     
+    /**
+     *Color Pickeer para mudarmos de cor
+     */
     @FXML
     public ColorPicker cp;
     
+    /**
+     * Botão para limpar o canvas 
+     *
+     */
     @FXML
     public Button btlimpa;
     
+    /**
+     * Label que vai fazer a contagem decrescente do timer
+     *
+     */
     @FXML
     public Label remain_time_lbl;
     
@@ -103,6 +130,11 @@ public class FXMLDocumentController implements Initializable {
         
     }
     
+    /**
+     * String que recebe do servidor
+     *
+     * @param s
+     */
     public void onNewFromServer(String s) {
 
         String[] splited = s.split(":");

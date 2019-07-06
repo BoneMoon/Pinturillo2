@@ -34,6 +34,10 @@ public class MultiServer {
 
     /**
      *
+     * Fica à espera de conecções até encontrar duas e qunado isso acontecer
+     * o jogo inicia
+     * 
+     * 
      * @throws IOException
      */
     public MultiServer() throws IOException {

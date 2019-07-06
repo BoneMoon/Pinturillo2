@@ -20,7 +20,10 @@ public class Cliente extends Thread {
     DataOutputStream dos;
     Consumer<String> onNewFromServer;
 
-        public Thread sendMessage = new Thread(new Runnable(){
+    /**
+     *
+     */
+    public Thread sendMessage = new Thread(new Runnable(){
         @Override
         public void run() {
             while(true){
@@ -35,6 +38,9 @@ public class Cliente extends Thread {
         
     });
 
+    /**
+     *
+     */
     public Thread readMessage = new Thread(new Runnable(){
         @Override
         public void run() {
@@ -48,7 +54,13 @@ public class Cliente extends Thread {
         }           
     });
     
-        public Cliente(Consumer<String> onNewFromServer) throws UnknownHostException, IOException {
+    /**
+     *
+     * @param onNewFromServer
+     * @throws UnknownHostException
+     * @throws IOException
+     */
+    public Cliente(Consumer<String> onNewFromServer) throws UnknownHostException, IOException {
         this.ip = InetAddress.getByName("localhost");
         this.s = new Socket(ip, 1234);
         this.dis = new DataInputStream(s.getInputStream());
@@ -61,6 +73,10 @@ public class Cliente extends Thread {
         this.readMessage.start();
     }
     
+    /**
+     * String enviada  
+     * @param data
+     */
     public void send(String data) {
         try {
             dos.writeUTF(data);

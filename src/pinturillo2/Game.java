@@ -27,14 +27,28 @@ public class Game {
     TimerTask currTimerTask = null;
     volatile int currTime = 0;
     
+    /**
+     * Set valor da cor
+     *
+     * @param color
+     */
     public void setColor(Color color) {
         this.color = color;
     }
      
+    /**
+     * 
+     * @param controller 
+     */
     public Game(FXMLDocumentController controller) {
         this.ctl = controller;
     }
     
+    /**
+     * Quando o rato esta a ser pressionado
+     *
+     * @param e
+     */
     public void setOnMousePressed(MouseEvent e) {
         if(!myTurn || !gameHasStarted) return;
         isDrawing = true;
@@ -42,6 +56,11 @@ public class Game {
         this.y0 = e.getY();
     }
     
+    /**
+     * Quando o rato esta pressionado e esta a ser arrastado
+     *
+     * @param e
+     */
     public void setOnMouseDragged(MouseEvent e) {
         if(!myTurn || !gameHasStarted) return;
         if(!isDrawing) return;
@@ -50,6 +69,11 @@ public class Game {
         this.y0 = e.getY();
     }
     
+    /**
+     * Quando o rato não esta a ser pressionado
+     *
+     * @param e
+     */
     public void onMouseReleased(MouseEvent e) {
         if(!myTurn || !gameHasStarted) return;
         if (!isDrawing) return;
@@ -57,7 +81,19 @@ public class Game {
         drawLine(x0, y0, e.getX(), e.getY(), color, this.ctl.slide.getValue(), true);
     }
     
-        public void drawLine(double x0, double y0, double x1, double y1, Color color, double lw, boolean emmit){
+    /**
+     * 
+     * Desenha uma linha no canvas
+     *
+     * @param x0
+     * @param y0
+     * @param x1
+     * @param y1
+     * @param color
+     * @param lw
+     * @param emmit
+     */
+    public void drawLine(double x0, double y0, double x1, double y1, Color color, double lw, boolean emmit){
         this.ctl.gc.beginPath();
         this.ctl.gc.moveTo(x0, y0);
         this.ctl.gc.lineTo(x1, y1);
@@ -78,6 +114,11 @@ public class Game {
         }
     }
     
+    /**
+     * String que recebe do servidor
+     *
+     * @param s
+     */
     public void onNewFromServer(String s) {
         String[] splitedData = s.split(":");
         
