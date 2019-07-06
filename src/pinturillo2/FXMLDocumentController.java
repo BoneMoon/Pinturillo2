@@ -133,7 +133,7 @@ public class FXMLDocumentController implements Initializable {
     /**
      * String que recebe do servidor
      *
-     * @param s
+     * @param s String
      */
     public void onNewFromServer(String s) {
 

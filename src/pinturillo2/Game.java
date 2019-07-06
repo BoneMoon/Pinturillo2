@@ -30,7 +30,7 @@ public class Game {
     /**
      * Set valor da cor
      *
-     * @param color
+     * @param color color
      */
     public void setColor(Color color) {
         this.color = color;
@@ -38,7 +38,7 @@ public class Game {
      
     /**
      * 
-     * @param controller 
+     * @param controller ctl
      */
     public Game(FXMLDocumentController controller) {
         this.ctl = controller;
@@ -47,7 +47,7 @@ public class Game {
     /**
      * Quando o rato esta a ser pressionado
      *
-     * @param e
+     * @param e Mouse Event
      */
     public void setOnMousePressed(MouseEvent e) {
         if(!myTurn || !gameHasStarted) return;
@@ -59,7 +59,7 @@ public class Game {
     /**
      * Quando o rato esta pressionado e esta a ser arrastado
      *
-     * @param e
+     * @param e Mouse Event
      */
     public void setOnMouseDragged(MouseEvent e) {
         if(!myTurn || !gameHasStarted) return;
@@ -72,7 +72,7 @@ public class Game {
     /**
      * Quando o rato não esta a ser pressionado
      *
-     * @param e
+     * @param e Mouse Event
      */
     public void onMouseReleased(MouseEvent e) {
         if(!myTurn || !gameHasStarted) return;
@@ -85,13 +85,13 @@ public class Game {
      * 
      * Desenha uma linha no canvas
      *
-     * @param x0
-     * @param y0
-     * @param x1
-     * @param y1
-     * @param color
-     * @param lw
-     * @param emmit
+     * @param x0 x0
+     * @param y0 y0
+     * @param x1 x
+     * @param y1 y
+     * @param color color
+     * @param lw stroke
+     * @param emmit bollean
      */
     public void drawLine(double x0, double y0, double x1, double y1, Color color, double lw, boolean emmit){
         this.ctl.gc.beginPath();
@@ -117,7 +117,7 @@ public class Game {
     /**
      * String que recebe do servidor
      *
-     * @param s
+     * @param s String
      */
     public void onNewFromServer(String s) {
         String[] splitedData = s.split(":");

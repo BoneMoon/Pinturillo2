@@ -38,7 +38,7 @@ public class MultiServer {
      * o jogo inicia
      * 
      * 
-     * @throws IOException
+     * @throws IOException Exception
      */
     public MultiServer() throws IOException {
     
@@ -72,8 +72,8 @@ public class MultiServer {
 
     /**
      *
-     * @param args
-     * @throws IOException
+     * @param args argumentos
+     * @throws IOException Exception
      */
     public static void main(String[] args) throws IOException {
         MultiServer s = new MultiServer();

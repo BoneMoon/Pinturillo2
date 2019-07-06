@@ -56,9 +56,9 @@ public class Cliente extends Thread {
     
     /**
      *
-     * @param onNewFromServer
-     * @throws UnknownHostException
-     * @throws IOException
+     * @param onNewFromServer String
+     * @throws UnknownHostException Exception
+     * @throws IOException Exception 
      */
     public Cliente(Consumer<String> onNewFromServer) throws UnknownHostException, IOException {
         this.ip = InetAddress.getByName("localhost");
@@ -75,7 +75,7 @@ public class Cliente extends Thread {
     
     /**
      * String enviada  
-     * @param data
+     * @param data String
      */
     public void send(String data) {
         try {

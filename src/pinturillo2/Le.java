@@ -7,7 +7,7 @@ package pinturillo2;
 import java.io.*;
 /**
  *
- * @author Mendes & Marcelino
+ * @author Mendes  Marcelino
  */
 public class Le {
 	// Inibe o construtor por defeito
